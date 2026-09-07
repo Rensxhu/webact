@@ -1,50 +1,88 @@
-# werb
+# Visit Pangasinan Web Guide
 
-This template should help get you started developing with Vue 3 in Vite.
+Mobile-first tourism website for Pangasinan focused on cultural and heritage destinations. Built with Vue, Vite, Bootstrap utilities, and custom CSS design tokens.
 
-## Recommended IDE Setup
+## Goals
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Fast enough for 3G and 4G mobile conditions.
+- Responsive on small phones through desktop screens.
+- Inclusive UX aligned with WCAG 2.1 AA practices.
+- Maintainable component and data-driven architecture.
+- Deployable as static output to GitHub Pages.
 
-## Recommended Browser Setup
+## Stack
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- Vue 3 (RC channel)
+- Vue Router
+- Vite
+- Bootstrap (layout and utilities)
+- Vitest + Vue Test Utils
+- ESLint + Oxlint + Prettier
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Project setup
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+## Run locally
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+## Quality checks
+
+```sh
+npm run lint
+npm run test:unit -- --run
+npm run build
+```
+
+## Route map
+
+- /
+- /destinations
+- /heritage
+- /about
+- /contact
+
+## Project structure
+
+- src/views: route-level pages
+- src/components: reusable UI blocks
+- src/data/tourismContent.js: local static content model
+- src/assets/base.css: design tokens and accessibility baselines
+- src/assets/main.css: component and layout styles
+
+## Accessibility checklist
+
+- Skip link present in app shell.
+- Keyboard focus states on links, buttons, and form controls.
+- Semantic landmarks and heading hierarchy per route view.
+- Contrast-safe palette based on primary tokens.
+- Form fields include labels and required semantics.
+
+## Performance checklist
+
+- Route-level lazy loading for non-home pages.
+- Images set with loading lazy and async decoding.
+- Responsive layout optimized for narrow viewports first.
+- Keep new media compressed and prefer modern formats.
+
+## Content editing workflow
+
+Edit destination, event, tip, and contact content in src/data/tourismContent.js.
+Keep fields consistent to avoid view-level formatting changes.
+
+## GitHub Pages deployment
+
+This project uses Vite base path /webact/ for repository-hosted Pages.
+
+Manual deploy:
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Publish the generated dist folder through GitHub Pages, or use the included GitHub Actions workflow.

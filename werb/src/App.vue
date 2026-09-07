@@ -1,85 +1,50 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, watch } from 'vue'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
+import SiteFooter from '@/components/SiteFooter.vue'
+import { navLinks } from '@/data/tourismContent'
+
+const isMenuOpen = ref(false)
+const route = useRoute()
+
+watch(
+  () => route.path,
+  () => {
+    isMenuOpen.value = false
+  },
+)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg container py-2" aria-label="Primary">
+      <RouterLink class="navbar-brand" to="/">
+        <span class="brand-title">Visit Pangasinan</span>
+        <span class="brand-tag">Cultural and Heritage Guide</span>
+      </RouterLink>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <button
+        class="navbar-toggler"
+        type="button"
+        :aria-expanded="isMenuOpen ? 'true' : 'false'"
+        aria-controls="primary-nav"
+        aria-label="Toggle navigation"
+        @click="isMenuOpen = !isMenuOpen"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+      <div id="primary-nav" class="navbar-collapse" :class="{ show: isMenuOpen }">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li v-for="link in navLinks" :key="link.path" class="nav-item">
+            <RouterLink class="nav-link" :to="link.path">{{ link.name }}</RouterLink>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </header>
 
   <RouterView />
+  <SiteFooter />
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
