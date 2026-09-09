@@ -1,4 +1,5 @@
 import { featuredSites, heritageSites, tourismSpots } from '@/data/tourismContent'
+import { logDiagnostic } from '@/utils/diagnostics'
 
 const normalizeQuery = (query = '') => query.trim().toLowerCase()
 
@@ -51,24 +52,49 @@ const applyFilters = (spots, options = {}) => {
   return sortByName(searched)
 }
 
-const withAsyncResult = async (resolver) => {
+const withAsyncResult = async (action, resolver, meta = {}) => {
+  logDiagnostic({ action, stage: 'start', status: 'pending', meta })
+
   try {
-    return await Promise.resolve(resolver())
+    const result = await Promise.resolve(resolver())
+    logDiagnostic({ action, stage: 'finish', status: 'success', meta: { ...meta, count: result.length } })
+    return result
   } catch (error) {
+    logDiagnostic({ action, stage: 'finish', status: 'error', meta, error })
     throw new Error(error?.message || 'Unable to load tourism data.', { cause: error })
   }
 }
 
 export const tourismService = {
   async getAllSpots(options = {}) {
-    return withAsyncResult(() => applyFilters(tourismSpots, options))
+    return withAsyncResult('tourism:getAllSpots', () => applyFilters(tourismSpots, options), {
+      hasQuery: Boolean(options.query),
+      hasLocation: Boolean(options.location),
+      hasCategory: Boolean(options.category),
+    })
   },
 
   async getFeaturedSpots(options = {}) {
-    return withAsyncResult(() => applyFilters(featuredSites, options))
+    return withAsyncResult(
+      'tourism:getFeaturedSpots',
+      () => applyFilters(featuredSites, options),
+      {
+        hasQuery: Boolean(options.query),
+        hasLocation: Boolean(options.location),
+        hasCategory: Boolean(options.category),
+      },
+    )
   },
 
   async getHeritageSpots(options = {}) {
-    return withAsyncResult(() => applyFilters(heritageSites, options))
+    return withAsyncResult(
+      'tourism:getHeritageSpots',
+      () => applyFilters(heritageSites, options),
+      {
+        hasQuery: Boolean(options.query),
+        hasLocation: Boolean(options.location),
+        hasCategory: Boolean(options.category),
+      },
+    )
   },
 }

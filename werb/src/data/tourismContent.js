@@ -4,7 +4,8 @@ export const navLinks = [
   { name: 'Heritage Sites', path: '/heritage' },
 ]
 
-const SPOT_IMAGE_BASE = '/images/spots'
+const APP_BASE = import.meta.env.BASE_URL || '/'
+const SPOT_IMAGE_BASE = `${APP_BASE.replace(/\/$/, '')}/images/spots`
 
 const placeholderImage = (id) => `${SPOT_IMAGE_BASE}/${id}.jpg`
 

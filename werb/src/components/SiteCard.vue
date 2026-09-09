@@ -1,7 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { logDiagnostic } from '@/utils/diagnostics'
 
-defineProps({
+const props = defineProps({
   site: {
     type: Object,
     required: true,
@@ -13,10 +14,53 @@ defineProps({
 })
 
 const imageLoadFailed = ref(false)
+const imageSrc = ref('')
+const hasTriedNameBasedPath = ref(false)
+
+const buildNameBasedImagePath = () => {
+  const currentSrc = props.site?.image || ''
+  const basePath = currentSrc.replace(/[^/]*$/, '')
+  const encodedName = encodeURIComponent(`${props.site?.name || ''}.jpg`)
+  return `${basePath}${encodedName}`
+}
 
 const onImageError = () => {
+  if (!hasTriedNameBasedPath.value) {
+    hasTriedNameBasedPath.value = true
+    imageSrc.value = buildNameBasedImagePath()
+    logDiagnostic({
+      action: 'siteCard:imageLoad',
+      stage: 'retry',
+      status: 'pending',
+      meta: {
+        siteId: props.site?.id,
+        retrySrc: imageSrc.value,
+      },
+    })
+    return
+  }
+
   imageLoadFailed.value = true
+  logDiagnostic({
+    action: 'siteCard:imageLoad',
+    stage: 'finish',
+    status: 'error',
+    meta: {
+      siteId: props.site?.id,
+      imageSrc: imageSrc.value,
+    },
+  })
 }
+
+watch(
+  () => [props.site?.image, props.site?.name],
+  () => {
+    imageSrc.value = props.site?.image || ''
+    hasTriedNameBasedPath.value = false
+    imageLoadFailed.value = false
+  },
+  { immediate: true },
+)
 
 const cardImageAlt = computed(() =>
   imageLoadFailed.value ? 'Image placeholder for tourist spot' : '',
@@ -28,7 +72,7 @@ const cardImageAlt = computed(() =>
     <img
       v-if="!imageLoadFailed"
       class="site-image"
-      :src="site.image"
+      :src="imageSrc"
       :alt="site.alt"
       width="800"
       height="450"

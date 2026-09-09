@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 import { contactService } from '@/services/contactService'
+import { logDiagnostic } from '@/utils/diagnostics'
 import { sanitizeText, validateInquiry } from '@/utils/sanitize'
 import { contactDetails, travelTips } from '@/data/tourismContent'
 
@@ -33,6 +34,10 @@ const resetForm = () => {
 }
 
 const submitInquiry = async () => {
+  if (isSubmitting.value) {
+    return
+  }
+
   status.value = 'idle'
   feedbackMessage.value = ''
 
@@ -51,6 +56,14 @@ const submitInquiry = async () => {
   if (Object.keys(validationErrors).length > 0) {
     status.value = 'error'
     feedbackMessage.value = 'Please correct the highlighted form fields and try again.'
+    logDiagnostic({
+      action: 'contact:submitInquiry',
+      stage: 'validate',
+      status: 'error',
+      meta: {
+        invalidFields: Object.keys(validationErrors),
+      },
+    })
     return
   }
 
