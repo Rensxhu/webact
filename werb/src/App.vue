@@ -11,6 +11,14 @@ watch(
   () => route.path,
   () => {
     isMenuOpen.value = false
+
+    requestAnimationFrame(() => {
+      const main = document.getElementById('main-content')
+      if (main) {
+        main.setAttribute('tabindex', '-1')
+        main.focus()
+      }
+    })
   },
 )
 </script>

@@ -196,6 +196,11 @@
   color: var(--text-muted);
 }
 
+.site-description {
+  margin-top: var(--space-2);
+  font-size: 0.95rem;
+}
+
 .site-info,
 .tip-list {
   margin: 0;
@@ -232,6 +237,34 @@
 
 .panel-card {
   padding: var(--space-4);
+}
+
+.site-image-placeholder {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--brand-primary);
+  font-weight: 600;
+  background: linear-gradient(135deg, #e7f0f6, #d8e3eb);
+}
+
+.form-control:focus-visible,
+.form-select:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 3px solid rgb(11 60 93 / 35%);
+  outline-offset: 2px;
+}
+
+.form-hint {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.filter-feedback {
+  color: var(--text-muted);
+  font-size: 0.92rem;
 }
 
 .tip-list li + li {
@@ -287,5 +320,16 @@
 
   .site-image {
     height: 230px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-overlay {
+    padding-top: 3.5rem;
+  }
+
+  .site-image,
+  .site-card.compact .site-image {
+    height: 165px;
   }
 }
