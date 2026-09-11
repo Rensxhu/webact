@@ -28,8 +28,8 @@ watch(
   <header class="site-header">
     <nav class="navbar navbar-expand-lg container py-2" aria-label="Primary">
       <RouterLink class="navbar-brand" to="/">
-        <span class="brand-title">Visit Pangasinan</span>
-        <span class="brand-tag">Cultural and Heritage Guide</span>
+        <span class="brand-title">PangTour</span>
+        <span class="brand-tag">A Cultural and Heritage Guide</span>
       </RouterLink>
 
       <button
