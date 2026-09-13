@@ -28,9 +28,9 @@ const filterModel = computed({
 })
 
 const locations = computed(() =>
-  [...new Set(tourismSpots.map((spot) => spot.location))].sort((first, second) =>
-    first.localeCompare(second),
-  ),
+  [...new Set(tourismSpots.map((spot) => spot.location))]
+    .filter((location) => !['Anda', 'Balungao'].includes(location))
+    .sort((first, second) => first.localeCompare(second)),
 )
 
 const categories = computed(() =>
