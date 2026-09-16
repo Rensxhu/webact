@@ -1,13 +1,22 @@
 export const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'Destinations', path: '/destinations' },
-  { name: 'Heritage Sites', path: '/heritage' },
 ]
 
 const APP_BASE = import.meta.env.BASE_URL || '/'
 const SPOT_IMAGE_BASE = `${APP_BASE.replace(/\/$/, '')}/images/spots`
 
 const placeholderImage = (id) => `${SPOT_IMAGE_BASE}/${id}.jpg`
+
+export const FEATURED_SPOT_IDS = [
+  'hundred-islands-gateway',
+  'minor-basilica-of-our-lady-of-manaoag',
+  'patar-beach',
+  'cape-bolinao-lighthouse',
+  'bolinao-falls',
+  'tondol-beach',
+  'colibra-island',
+]
 
 const RAW_SPOTS = [
   {
@@ -232,15 +241,7 @@ const dedupeById = (spots) => {
 export const tourismSpots = dedupeById(RAW_SPOTS.map(normalizeSpot))
 
 export const featuredSites = tourismSpots.filter((spot) =>
-  [
-    'hundred-islands-gateway',
-    'minor-basilica-of-our-lady-of-manaoag',
-    'patar-beach',
-    'cape-bolinao-lighthouse',
-    'bolinao-falls',
-    'tondol-beach',
-    'colibra-island',
-  ].includes(spot.id),
+  FEATURED_SPOT_IDS.includes(spot.id),
 )
 
 export const culturalEvents = [
@@ -267,18 +268,6 @@ export const travelTips = [
   'Respect local customs in heritage and religious areas.',
   'Use accredited local guides where available.',
 ]
-
-export const heritageSites = tourismSpots.filter((spot) =>
-    [
-      'minor-basilica-of-our-lady-of-manaoag',
-      'cape-bolinao-lighthouse',
-      'lingayen-beach-and-gulf',
-      'pangasinan-provincial-capitol-complex',
-      'enchanted-cave',
-      'pangasinan-provincial-museum',
-      'st-john-the-evangelist-cathedral',
-    ].includes(spot.id),
-  )
 
 export const contactDetails = {
   email: 'visitpangasinan@example.com',

@@ -25,11 +25,7 @@ const router = createRouter({
     },
     {
       path: '/heritage',
-      name: 'heritage',
-      component: () => import('../views/HeritageView.vue'),
-      meta: {
-        title: 'Visit Pangasinan | Heritage',
-      },
+      redirect: '/destinations',
     },
   ],
 })

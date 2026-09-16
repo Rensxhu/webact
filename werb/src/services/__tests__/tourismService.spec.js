@@ -27,4 +27,24 @@ describe('tourismService', () => {
     expect(results).toHaveLength(1)
     expect(results[0].id).toBe('cape-bolinao-lighthouse')
   })
+
+  it('returns empty results for locations not in featured pool without throwing', async () => {
+    const results = await tourismService.getFeaturedSpots({
+      location: 'Dagupan',
+    })
+
+    expect(results).toEqual([])
+  })
+
+  it('provides visibility audit output with no registry errors', () => {
+    const audit = tourismService.getVisibilityAudit()
+
+    expect(audit).toMatchObject({
+      visibilityEnabled: expect.any(Boolean),
+      errors: expect.any(Array),
+      hidden: expect.any(Array),
+    })
+
+    expect(audit.errors).toEqual([])
+  })
 })

@@ -11,7 +11,7 @@ import { culturalEvents, featuredSites } from '@/data/tourismContent'
       title="Discover Pangasinan Through Culture and Heritage"
       subtitle="Plan mobile-friendly trips to churches, museums, coastlines, and local festivals."
       :primary-action="{ label: 'Explore Destinations', to: '/destinations' }"
-      :secondary-action="{ label: 'View Heritage Sites', to: '/heritage' }"
+      :secondary-action="{ label: 'Browse All Spots', to: '/destinations' }"
     />
 
     <section class="container page-section py-4 py-md-5" aria-labelledby="featured-sites">

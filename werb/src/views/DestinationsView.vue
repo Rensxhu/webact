@@ -16,7 +16,7 @@ const {
   filters,
   loadSpots,
   updateFilter,
-} = useTourismSpots(tourismService.getFeaturedSpots)
+} = useTourismSpots(tourismService.getAllSpots)
 
 const filterModel = computed({
   get: () => filters.value,
@@ -28,9 +28,9 @@ const filterModel = computed({
 })
 
 const locations = computed(() =>
-  [...new Set(tourismSpots.map((spot) => spot.location))]
-    .filter((location) => !['Anda', 'Balungao'].includes(location))
-    .sort((first, second) => first.localeCompare(second)),
+  [...new Set(tourismSpots.map((spot) => spot.location))].sort((first, second) =>
+    first.localeCompare(second),
+  ),
 )
 
 const categories = computed(() =>
@@ -48,8 +48,8 @@ onMounted(() => {
   <main id="main-content" class="page-section container py-4 py-md-5">
     <SectionTitle
       eyebrow="Explore"
-      title="Top Destinations"
-      description="Find scenic and cultural highlights across Pangasinan."
+      title="Destinations"
+      description="Find scenic, cultural, and historical highlights across Pangasinan."
     />
 
     <TourismFilterBar v-model="filterModel" :locations="locations" :categories="categories" />

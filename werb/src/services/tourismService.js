@@ -1,4 +1,6 @@
-import { featuredSites, heritageSites, tourismSpots } from '@/data/tourismContent'
+import { appConfig } from '@/config/env'
+import { featuredSites, tourismSpots } from '@/data/tourismContent'
+import { isVisibleInScope, validateVisibilityRegistry, visibilityRegistry } from '@/data/tourismVisibility'
 import { logDiagnostic } from '@/utils/diagnostics'
 
 const normalizeQuery = (query = '') => query.trim().toLowerCase()
@@ -52,6 +54,33 @@ const applyFilters = (spots, options = {}) => {
   return sortByName(searched)
 }
 
+const applyVisibilityFilter = (spots, scope) =>
+  spots.filter((spot) => isVisibleInScope(spot.id, scope))
+
+const getVisibilityValidationErrors = () => validateVisibilityRegistry(tourismSpots)
+
+const shouldUseVisibilityMetadata = () => appConfig.enableVisibilityMetadata
+
+const withVisibilityFallback = ({ scope, fallbackSpots }) => {
+  if (!shouldUseVisibilityMetadata()) {
+    return fallbackSpots
+  }
+
+  return applyVisibilityFilter(tourismSpots, scope)
+}
+
+if (import.meta.env.DEV) {
+  const errors = getVisibilityValidationErrors()
+  if (errors.length > 0) {
+    logDiagnostic({
+      action: 'tourism:visibilityValidation',
+      stage: 'bootstrap',
+      status: 'error',
+      meta: { errorCount: errors.length, errors },
+    })
+  }
+}
+
 const withAsyncResult = async (action, resolver, meta = {}) => {
   logDiagnostic({ action, stage: 'start', status: 'pending', meta })
 
@@ -67,34 +96,45 @@ const withAsyncResult = async (action, resolver, meta = {}) => {
 
 export const tourismService = {
   async getAllSpots(options = {}) {
-    return withAsyncResult('tourism:getAllSpots', () => applyFilters(tourismSpots, options), {
-      hasQuery: Boolean(options.query),
-      hasLocation: Boolean(options.location),
-      hasCategory: Boolean(options.category),
-    })
+    return withAsyncResult(
+      'tourism:getAllSpots',
+      () => applyFilters(withVisibilityFallback({ scope: 'search', fallbackSpots: tourismSpots }), options),
+      {
+        hasQuery: Boolean(options.query),
+        hasLocation: Boolean(options.location),
+        hasCategory: Boolean(options.category),
+        visibilityEnabled: shouldUseVisibilityMetadata(),
+      },
+    )
   },
 
   async getFeaturedSpots(options = {}) {
     return withAsyncResult(
       'tourism:getFeaturedSpots',
-      () => applyFilters(featuredSites, options),
+      () =>
+        applyFilters(
+          withVisibilityFallback({ scope: 'destinations', fallbackSpots: featuredSites }),
+          options,
+        ),
       {
         hasQuery: Boolean(options.query),
         hasLocation: Boolean(options.location),
         hasCategory: Boolean(options.category),
+        visibilityEnabled: shouldUseVisibilityMetadata(),
       },
     )
   },
 
-  async getHeritageSpots(options = {}) {
-    return withAsyncResult(
-      'tourism:getHeritageSpots',
-      () => applyFilters(heritageSites, options),
-      {
-        hasQuery: Boolean(options.query),
-        hasLocation: Boolean(options.location),
-        hasCategory: Boolean(options.category),
-      },
-    )
+  getVisibilityAudit() {
+    const errors = getVisibilityValidationErrors()
+    const hidden = Object.entries(visibilityRegistry)
+      .filter(([, value]) => value.status !== 'visible')
+      .map(([id, value]) => ({ id, ...value }))
+
+    return {
+      visibilityEnabled: shouldUseVisibilityMetadata(),
+      errors,
+      hidden,
+    }
   },
 }
