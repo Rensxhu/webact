@@ -42,9 +42,7 @@ watch(
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div id="primary-nav" class="navbar-collapse" :class="{ show: isMenuOpen }">
-        <!-- this is comment -->
         <ul class="navbar-nav ms-auto gap-lg-2">
           <li v-for="link in navLinks" :key="link.path" class="nav-item">
             <RouterLink class="nav-link" :to="link.path">{{ link.name }}</RouterLink>
