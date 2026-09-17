@@ -62,7 +62,7 @@ export const visibilityRegistry = {
     scopes: { home: false, destinations: false, heritage: true, search: true },
   }),
   'st-john-the-evangelist-cathedral': createEntry({
-    scopes: { home: false, destinations: false, heritage: true, search: true },
+    scopes: { home: false, destinations: true, heritage: true, search: true },
   }),
 }
 

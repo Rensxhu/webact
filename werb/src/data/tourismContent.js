@@ -15,6 +15,7 @@ export const FEATURED_SPOT_IDS = [
   'cape-bolinao-lighthouse',
   'bolinao-falls',
   'tondol-beach',
+  'st-john-the-evangelist-cathedral',
   'colibra-island',
 ]
 
@@ -92,7 +93,7 @@ const RAW_SPOTS = [
   {
     id: 'tondol-beach',
     name: 'Tondol Beach',
-    location: 'Anda',
+    location: 'Dagupan City',
     category: 'Beach Escape',
     summary: 'Family-friendly beach with calm, shallow waters.',
     description:
@@ -100,7 +101,7 @@ const RAW_SPOTS = [
     fee: 'Public access with possible local fees',
     hours: 'Open 24 hours',
     image: placeholderImage('tondol-beach'),
-    alt: 'Shallow beachfront waters and white sand at Tondol Beach in Anda',
+    alt: 'Shallow beachfront waters and white sand at Tondol Beach in Dagupan City',
     tags: ['beach', 'family', 'camping'],
   },
   {
@@ -206,16 +207,16 @@ const RAW_SPOTS = [
   {
     id: 'st-john-the-evangelist-cathedral',
     name: 'St. John the Evangelist Cathedral',
-    location: 'Dagupan',
+    location: 'Dagupan City',
     category: 'Religious Heritage',
     summary: 'Heritage church central to local faith traditions.',
     description:
-      'A heritage church central to local faith and annual traditions, known as one of Dagupan\'s notable religious landmarks.',
+      'A heritage church central to local faith and annual traditions, known as one of Dagupan City\'s notable religious landmarks.',
     fee: 'Free entry',
     hours: '5:30 AM - 7:00 PM',
     accessibility: 'Ramp access at side entrance.',
     image: placeholderImage('st-john-the-evangelist-cathedral'),
-    alt: 'Historic facade of St. John the Evangelist Cathedral in Dagupan',
+    alt: 'Historic facade of St. John the Evangelist Cathedral in Dagupan City',
     tags: ['church', 'faith', 'heritage'],
   },
 ]

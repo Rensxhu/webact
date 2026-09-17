@@ -28,12 +28,16 @@ describe('tourismService', () => {
     expect(results[0].id).toBe('cape-bolinao-lighthouse')
   })
 
-  it('returns empty results for locations not in featured pool without throwing', async () => {
+  it('returns both featured spots for Dagupan City location', async () => {
     const results = await tourismService.getFeaturedSpots({
-      location: 'Dagupan',
+      location: 'Dagupan City',
     })
 
-    expect(results).toEqual([])
+    expect(results).toHaveLength(2)
+    expect(results.map((spot) => spot.id)).toEqual([
+      'st-john-the-evangelist-cathedral',
+      'tondol-beach',
+    ])
   })
 
   it('provides visibility audit output with no registry errors', () => {
