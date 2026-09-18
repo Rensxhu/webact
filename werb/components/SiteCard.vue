@@ -17,11 +17,48 @@ const imageLoadFailed = ref(false)
 const imageSrc = ref('')
 const hasTriedNameBasedPath = ref(false)
 
+const runtimeConfig = typeof useRuntimeConfig === 'function' ? useRuntimeConfig() : { app: { baseURL: '/' } }
+const appBaseUrl = runtimeConfig?.app?.baseURL || '/'
+
+const normalizeBaseUrl = (baseUrl) => {
+  const normalized = (baseUrl || '/').trim()
+  if (!normalized || normalized === '/') {
+    return '/'
+  }
+
+  const withoutEdgeSlashes = normalized.replace(/^\/+|\/+$/g, '')
+  return `/${withoutEdgeSlashes}/`
+}
+
+const toBaseAwareImagePath = (value) => {
+  const source = (value || '').trim()
+  if (!source) {
+    return ''
+  }
+
+  // Keep absolute/protocol and data/blob URLs unchanged.
+  if (/^(?:[a-z]+:)?\/\//i.test(source) || /^(?:data|blob):/i.test(source)) {
+    return source
+  }
+
+  const baseUrl = normalizeBaseUrl(appBaseUrl)
+  if (baseUrl === '/') {
+    return source.startsWith('/') ? source : `/${source}`
+  }
+
+  if (source.startsWith(baseUrl)) {
+    return source
+  }
+
+  const pathWithoutLeadingSlash = source.replace(/^\/+/, '')
+  return `${baseUrl}${pathWithoutLeadingSlash}`
+}
+
 const buildNameBasedImagePath = () => {
-  const currentSrc = props.site?.image || ''
+  const currentSrc = imageSrc.value || props.site?.image || ''
   const basePath = currentSrc.replace(/[^/]*$/, '')
   const encodedName = encodeURIComponent(`${props.site?.name || ''}.jpg`)
-  return `${basePath}${encodedName}`
+  return toBaseAwareImagePath(`${basePath}${encodedName}`)
 }
 
 const onImageError = () => {
@@ -55,7 +92,7 @@ const onImageError = () => {
 watch(
   () => [props.site?.image, props.site?.name],
   () => {
-    imageSrc.value = props.site?.image || ''
+    imageSrc.value = toBaseAwareImagePath(props.site?.image || '')
     hasTriedNameBasedPath.value = false
     imageLoadFailed.value = false
   },
