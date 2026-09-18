@@ -1,4 +1,4 @@
-import { appConfig } from '@/config/env'
+import { getAppConfig } from '@/config/env'
 import { logDiagnostic } from '@/utils/diagnostics'
 
 const withTimeout = async (promise, timeoutMs) => {
@@ -22,6 +22,7 @@ export const contactService = {
     logDiagnostic({ action: 'contact:submitInquiry', stage: 'start', status: 'pending' })
 
     const body = JSON.stringify(payload)
+    const appConfig = getAppConfig()
 
     if (!appConfig.contactEndpoint) {
       logDiagnostic({

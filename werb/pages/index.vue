@@ -3,6 +3,8 @@ import HeroBanner from '@/components/HeroBanner.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 import SiteCard from '@/components/SiteCard.vue'
 import { culturalEvents, featuredSites } from '@/data/tourismContent'
+
+useHead({ title: 'Visit Pangasinan | Home' })
 </script>
 
 <template>

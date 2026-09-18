@@ -8,6 +8,8 @@ import { useTourismSpots } from '@/composables/useTourismSpots'
 import { tourismSpots } from '@/data/tourismContent'
 import { tourismService } from '@/services/tourismService'
 
+useHead({ title: 'Visit Pangasinan | Destinations' })
+
 const {
   spots,
   loading,
