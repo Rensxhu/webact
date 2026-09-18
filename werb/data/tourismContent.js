@@ -3,7 +3,7 @@ export const navLinks = [
   { name: 'Destinations', path: '/destinations' },
 ]
 
-const APP_BASE = import.meta.env.BASE_URL || '/'
+const APP_BASE = import.meta.env.NUXT_APP_BASE_URL || '/'
 const SPOT_IMAGE_BASE = `${APP_BASE.replace(/\/$/, '')}/images/spots`
 
 const placeholderImage = (id) => `${SPOT_IMAGE_BASE}/${id}.jpg`
