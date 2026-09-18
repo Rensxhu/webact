@@ -26,12 +26,12 @@ defineProps({
       <h1 id="hero-title">{{ title }}</h1>
       <p class="hero-subtitle">{{ subtitle }}</p>
       <div class="hero-actions" role="group" aria-label="Primary page actions">
-        <RouterLink v-if="primaryAction" class="btn btn-primary btn-lg" :to="primaryAction.to">
+        <NuxtLink v-if="primaryAction" class="btn btn-primary btn-lg" :to="primaryAction.to">
           {{ primaryAction.label }}
-        </RouterLink>
-        <RouterLink v-if="secondaryAction" class="btn btn-outline-light btn-lg" :to="secondaryAction.to">
+        </NuxtLink>
+        <NuxtLink v-if="secondaryAction" class="btn btn-outline-light btn-lg" :to="secondaryAction.to">
           {{ secondaryAction.label }}
-        </RouterLink>
+        </NuxtLink>
       </div>
     </div>
   </section>

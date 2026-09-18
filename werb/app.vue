@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { RouterLink, RouterView, useRoute } from 'vue-router'
 import SiteFooter from '@/components/SiteFooter.vue'
 import { navLinks } from '@/data/tourismContent'
 
@@ -27,10 +26,10 @@ watch(
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header">
     <nav class="navbar navbar-expand-lg container py-2" aria-label="Primary">
-      <RouterLink class="navbar-brand" to="/">
+      <NuxtLink class="navbar-brand" to="/">
         <span class="brand-title">PangTour</span>
         <span class="brand-tag">A Cultural and Heritage Guide</span>
-      </RouterLink>
+      </NuxtLink>
 
       <button
         class="navbar-toggler"
@@ -45,13 +44,13 @@ watch(
       <div id="primary-nav" class="navbar-collapse" :class="{ show: isMenuOpen }">
         <ul class="navbar-nav ms-auto gap-lg-2">
           <li v-for="link in navLinks" :key="link.path" class="nav-item">
-            <RouterLink class="nav-link" :to="link.path">{{ link.name }}</RouterLink>
+            <NuxtLink class="nav-link" :to="link.path">{{ link.name }}</NuxtLink>
           </li>
         </ul>
       </div>
     </nav>
   </header>
 
-  <RouterView />
+  <NuxtPage />
   <SiteFooter />
 </template>

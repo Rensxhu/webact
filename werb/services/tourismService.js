@@ -1,4 +1,4 @@
-import { appConfig } from '@/config/env'
+import { getAppConfig } from '@/config/env'
 import { featuredSites, tourismSpots } from '@/data/tourismContent'
 import { isVisibleInScope, validateVisibilityRegistry, visibilityRegistry } from '@/data/tourismVisibility'
 import { logDiagnostic } from '@/utils/diagnostics'
@@ -59,7 +59,7 @@ const applyVisibilityFilter = (spots, scope) =>
 
 const getVisibilityValidationErrors = () => validateVisibilityRegistry(tourismSpots)
 
-const shouldUseVisibilityMetadata = () => appConfig.enableVisibilityMetadata
+const shouldUseVisibilityMetadata = () => getAppConfig().enableVisibilityMetadata
 
 const withVisibilityFallback = ({ scope, fallbackSpots }) => {
   if (!shouldUseVisibilityMetadata()) {
